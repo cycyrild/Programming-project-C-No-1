@@ -509,7 +509,7 @@ int main()
 
 		if (strcasecmp(aStrgArray, "FIN") != 0)
 		{
-			if (toupper(aStrgArray[0]) == 'D' && toupper(aStrgArray[1]) == 'E' && toupper(aStrgArray[2]) == 'L')
+			if (toupper(aStrgArray[0]) == 'S' && toupper(aStrgArray[1]) == 'U' && toupper(aStrgArray[2]) == 'P')
 			{
 				int basketIndex = aStrgArray[4] - '0';
 				char basketReference[4];
