@@ -307,7 +307,7 @@ void AddItemToBasketAndgetEmojiByReference(char fruits[15][3][5], char legumes[1
 	char caisseMsgs[3][32], char caisseMsgsTemplate[3][64], int* basketsFull)
 {
 	char element[5][5][5];
-	int found;
+	int found = 0;
 	switch (toupper(ref[0]))
 	{
 	case 'L':;
@@ -512,7 +512,7 @@ int main()
 			if (toupper(aStrgArray[0]) == 'S' && toupper(aStrgArray[1]) == 'U' && toupper(aStrgArray[2]) == 'P')
 			{
 				int basketIndex = aStrgArray[4] - '0';
-				char basketReference[4];
+				char basketReference[4] = { '\0' };
 				basketReference[0] = aStrgArray[6];
 				basketReference[1] = aStrgArray[7];
 				basketReference[2] = aStrgArray[8];
