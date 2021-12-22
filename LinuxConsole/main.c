@@ -175,9 +175,9 @@ void printCustomForm(char fruits[15][3][5], char legumes[15][3][5], char viandes
 			legumes[10][2], legumes[11][2], legumes[12][2], legumes[13][2], legumes[14][2],
 			viandes[10][2], viandes[11][2], viandes[12][2], viandes[13][2], viandes[14][2],
 
-			basket1[0][0], basket1[1][0], basket1[2][0], basket2[0][0], basket2[1][0], basket2[2][0], caisseMsgs[0],
-			basket1[3][0], basket1[4][0], basket1[5][0], basket2[3][0], basket2[4][0], basket2[5][0], caisseMsgs[1],
-			basket1[6][0], basket1[7][0], basket1[8][0], basket2[6][0], basket2[7][0], basket2[8][0], caisseMsgs[2]
+			basket1[8][0], basket1[7][0], basket1[6][0],		basket2[8][0], basket2[7][0], basket2[6][0],	 caisseMsgs[0],
+			basket1[5][0], basket1[4][0], basket1[3][0],		basket2[5][0], basket2[4][0], basket2[3][0],	 caisseMsgs[1],
+			basket1[2][0], basket1[1][0], basket1[0][0],		basket2[2][0], basket2[1][0], basket2[0][0],	 caisseMsgs[2]
 		);
 	}
 }
@@ -195,9 +195,8 @@ int countSameArticle(char basket[10][3][5], char itemReference[32])
 	return sameArticleCount;
 }
 
-void getBalance(char basket1[10][3][5], char basket2[10][3][5], char caisseMsgsTemplate[3][64], char caisseMsgs[3][32])
+float getBalance(char basket1[10][3][5], char basket2[10][3][5])
 {
-	int basketItemCount = 0;
 	float allFloat = 0.000f;
 
 	for (int i = 0; i < 10; i++)
@@ -207,7 +206,6 @@ void getBalance(char basket1[10][3][5], char basket2[10][3][5], char caisseMsgsT
 			float f;
 			sscanf(basket1[i][2], "%f", &f);
 			allFloat += f;
-			basketItemCount++;
 		}
 	}
 	for (int i = 0; i < 10; i++)
@@ -217,11 +215,15 @@ void getBalance(char basket1[10][3][5], char basket2[10][3][5], char caisseMsgsT
 			float f;
 			sscanf(basket2[i][2], "%f", &f);
 			allFloat += f;
-			basketItemCount++;
 		}
 	}
+	return allFloat;
+}
+
+void setBalance(char basket1[10][3][5], char basket2[10][3][5], char caisseMsgsTemplate[3][64], char caisseMsgs[3][32])
+{
 	char buff[64];
-	snprintf(buff, sizeof(buff), caisseMsgsTemplate[0], allFloat);
+	snprintf(buff, sizeof(buff), caisseMsgsTemplate[0], getBalance(basket1, basket2));
 	strcpy(caisseMsgs[0], buff);
 }
 
@@ -264,7 +266,7 @@ void deleteElement(char basket1[10][3][5], char basket2[10][3][5], char itemRefe
 				cpyBasketItem(basket1, basket1, i, i+1);
 
 			}
-			if (getBasketItemCount(basket2) > 0)
+			/*if (getBasketItemCount(basket2) > 0)
 			{
 				cpyBasketItem(basket1, basket2, getBasketItemCount(basket1), 0);
 
@@ -274,7 +276,7 @@ void deleteElement(char basket1[10][3][5], char basket2[10][3][5], char itemRefe
 				{
 					cpyBasketItem(basket2, basket2, i, i + 1);
 				}
-			}
+			}*/
 		}
 
 	}
@@ -298,7 +300,7 @@ void deleteElement(char basket1[10][3][5], char basket2[10][3][5], char itemRefe
 		}
 	}
 
-	getBalance(basket1, basket2, caisseMsgsTemplate, caisseMsgs);
+	setBalance(basket1, basket2, caisseMsgsTemplate, caisseMsgs);
 	if (deletedElementIndex != -1) { *basketsFull =0; }
 }
 
@@ -378,7 +380,7 @@ void AddItemToBasketAndgetEmojiByReference(char fruits[15][3][5], char legumes[1
 		printf("All baskets are full | ");
 		*basketsFull = 1;
 	}
-	getBalance(basket1, basket2, caisseMsgsTemplate, caisseMsgs);
+	setBalance(basket1, basket2, caisseMsgsTemplate, caisseMsgs);
 }
 
 int getBasketItemCount(char basket[10][3][5])
@@ -394,21 +396,37 @@ int getBasketItemCount(char basket[10][3][5])
 	return basketItemCount;
 }
 
+void clearCarriageReturn(int c)
+{
+	do
+	{
+		c = (char)getchar();
+	} while (c != '\n');
+
+}
+
 int main()
 {
 
 	char caisseMsgsTemplate[3][64] =
 	{
 		"TOTAL A PAYER: %04.1f            ",
-		"SAISIR VOTRE MONTANT: %04.1f   ",
-		"MONNAIE: %04.1f                "
+		"SAISIR VOTRE MONTANT: %04.1f     ",
+		"MONNAIE: %04.1f                  "
+	};
+
+	char caisseMsgsDefault[3][32] =
+	{
+		"TOTAL A PAYER: 00.0            ",
+		"SAISIR VOTRE MONTANT:          ",
+		"MONNAIE:                       "
 	};
 
 	char caisseMsgs[3][32] =
 	{
 		"TOTAL A PAYER: 00.0            ",
-		"SAISIR VOTRE MONTANT: 00.0     ",
-		"MONNAIE: 00.0                  "
+		"SAISIR VOTRE MONTANT:          ",
+		"MONNAIE:                       "
 	};
 
 	int basketsFull = 0;
@@ -417,9 +435,9 @@ int main()
 		{"🍓", "F00", "3.4"},
 		{"🍇", "F01", "4.1"},
 		{"🍹", "F02", "2.9"},
-		{"🍎", "F03", "2.2"},
+		{"🍒", "F03", "2.2"},
 		{"🍐", "F04", "002"},
-		{"🍊", "F05", "3.1"},
+		{"🥭", "F05", "3.1"},
 		{"🍋", "F06", "001"},
 		{"🍌", "F07", "2.5"},
 		{"🍉", "F08", "3.8"},
@@ -499,10 +517,11 @@ int main()
 
 	char aStrgArray[32];
 	char c;
-	printCustomForm(fruits, legumes, viandes, caisseMsgs, basket1, basket2, basketsFull);
-	while (strcasecmp(aStrgArray, "FIN"))
+	//printCustomForm(fruits, legumes, viandes, caisseMsgs, basket1, basket2, basketsFull);
+	while (1)
 	{
 		system("clear");
+
 		printCustomForm(fruits, legumes, viandes, caisseMsgs, basket1, basket2, basketsFull);
 		gotoxy(30, 30);
 		scanf("%31[0-9a-zA-Z ]", &aStrgArray);
@@ -523,15 +542,46 @@ int main()
 			{
 				AddItemToBasketAndgetEmojiByReference(fruits, legumes, viandes, aStrgArray, basket1, basket2, caisseMsgs, caisseMsgsTemplate, &basketsFull);
 			}
+			aStrgArray[0] = '\0';
+
+		}
+		else
+		{
+			clearCarriageReturn(c);
+
+			aStrgArray[0] =  '\0' ;
+
+			char buff[64];
+			float f;
+			gotoxy(128, 30);
+			scanf("%f", &f);
+			snprintf(buff, sizeof(buff), caisseMsgsTemplate[1], f);
+
+			strcpy(caisseMsgs[1], buff);
+			snprintf(buff, sizeof(buff), caisseMsgsTemplate[2], f - (getBalance(basket1, basket2)));
+			strcpy(caisseMsgs[2], buff);
+			system("clear");
+
+			printf("Press 'c' to continue\n");
+			printCustomForm(fruits, legumes, viandes, caisseMsgs, basket1, basket2, basketsFull);
+
+			clearCarriageReturn(c);
+
+			char pressedKey;
+			gotoxy(30, 31);
+			scanf("%c", &pressedKey);
+			if (pressedKey != 'c')
+			{
+				system("clear");
+				return 0;
+			}
+
+			strcpy(caisseMsgs[1], caisseMsgsDefault[1]);
+			strcpy(caisseMsgs[2], caisseMsgsDefault[2]);
+
 		}
 
-		do
-		{
-			c = (char)getchar();
-		} while (c != '\n');
+		clearCarriageReturn(c);
 	}
-	system("clear");
-
-	return 0;
 }
 
