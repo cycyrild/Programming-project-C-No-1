@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#define clear() printf("\033[H\033[J")
 #define gotoxy(x,y) printf("\033[%d;%dH", (y), (x))
 
 void printCustomForm(char fruits[15][3][5], char legumes[15][3][5], char viandes[15][3][5], char caisseMsgs[3][32], char basket1[10][3][5], char basket2[10][3][5], int closeMsg)
@@ -175,9 +174,9 @@ void printCustomForm(char fruits[15][3][5], char legumes[15][3][5], char viandes
 			legumes[10][2], legumes[11][2], legumes[12][2], legumes[13][2], legumes[14][2],
 			viandes[10][2], viandes[11][2], viandes[12][2], viandes[13][2], viandes[14][2],
 
-			basket1[8][0], basket1[7][0], basket1[6][0],		basket2[8][0], basket2[7][0], basket2[6][0],	 caisseMsgs[0],
-			basket1[5][0], basket1[4][0], basket1[3][0],		basket2[5][0], basket2[4][0], basket2[3][0],	 caisseMsgs[1],
-			basket1[2][0], basket1[1][0], basket1[0][0],		basket2[2][0], basket2[1][0], basket2[0][0],	 caisseMsgs[2]
+			basket1[8][0], basket1[7][0], basket1[6][0], basket2[8][0], basket2[7][0], basket2[6][0], caisseMsgs[0],
+			basket1[5][0], basket1[4][0], basket1[3][0], basket2[5][0], basket2[4][0], basket2[3][0], caisseMsgs[1],
+			basket1[2][0], basket1[1][0], basket1[0][0], basket2[2][0], basket2[1][0], basket2[0][0], caisseMsgs[2]
 		);
 	}
 }
@@ -187,7 +186,7 @@ int countSameArticle(char basket[10][3][5], char itemReference[32])
 	int sameArticleCount = 0;
 	for (int i = 0; i < 10; i++)
 	{
-		if (strcasecmp(basket[i][1], itemReference) == 0)
+		if (strcasecmp(basket[i][1], itemReference) == 0)//if same
 		{
 			sameArticleCount++;
 		}
@@ -201,7 +200,7 @@ float getBalance(char basket1[10][3][5], char basket2[10][3][5])
 
 	for (int i = 0; i < 10; i++)
 	{
-		if (strcmp(basket1[i][1], "000") != 0)//if not empty
+		if (strcmp(basket1[i][1], "000"))//if different than 000
 		{
 			float f;
 			sscanf(basket1[i][2], "%f", &f);
@@ -210,7 +209,7 @@ float getBalance(char basket1[10][3][5], char basket2[10][3][5])
 	}
 	for (int i = 0; i < 10; i++)
 	{
-		if (strcmp(basket2[i][1], "000") != 0)//if not empty
+		if (strcmp(basket2[i][1], "000"))//if different than 000
 		{
 			float f;
 			sscanf(basket2[i][2], "%f", &f);
@@ -227,7 +226,7 @@ void setBalance(char basket1[10][3][5], char basket2[10][3][5], char caisseMsgsT
 	strcpy(caisseMsgs[0], buff);
 }
 
-void cpyBasketItem(char basketDest[10][3][5], char basketSource[10][3][5],  int destIndex, int srcIndex)
+void cpyBasketItem(char basketDest[10][3][5], char basketSource[10][3][5], int destIndex, int srcIndex)
 {
 	strcpy(basketDest[destIndex][0], basketSource[srcIndex][0]);
 	strcpy(basketDest[destIndex][1], basketSource[srcIndex][1]);
@@ -252,7 +251,7 @@ void deleteElement(char basket1[10][3][5], char basket2[10][3][5], char itemRefe
 	{
 		for (int i = 0; i < 10; i++)
 		{
-			if (strcasecmp(basket1[i][1], itemReference) == 0)
+			if (strcasecmp(basket1[i][1], itemReference) == 0)//if same
 			{
 				clearBasketElementAtIndex(basket1, i);
 				deletedElementIndex = i;
@@ -263,7 +262,7 @@ void deleteElement(char basket1[10][3][5], char basket2[10][3][5], char itemRefe
 		{
 			for (int i = deletedElementIndex; i < 10 - 1; i++)
 			{
-				cpyBasketItem(basket1, basket1, i, i+1);
+				cpyBasketItem(basket1, basket1, i, i + 1);
 
 			}
 			/*if (getBasketItemCount(basket2) > 0)
@@ -284,7 +283,7 @@ void deleteElement(char basket1[10][3][5], char basket2[10][3][5], char itemRefe
 	{
 		for (int i = 0; i < 10; i++)
 		{
-			if (strcasecmp(basket2[i][1], itemReference) == 0)
+			if (strcasecmp(basket2[i][1], itemReference) == 0)//if same
 			{
 				clearBasketElementAtIndex(basket2, i);
 				deletedElementIndex = i;
@@ -301,7 +300,7 @@ void deleteElement(char basket1[10][3][5], char basket2[10][3][5], char itemRefe
 	}
 
 	setBalance(basket1, basket2, caisseMsgsTemplate, caisseMsgs);
-	if (deletedElementIndex != -1) { *basketsFull =0; }
+	if (deletedElementIndex != -1) { *basketsFull = 0; }
 }
 
 
@@ -315,7 +314,7 @@ void AddItemToBasketAndgetEmojiByReference(char fruits[15][3][5], char legumes[1
 	case 'L':;
 		for (int i = 0; i < 15; i++)
 		{
-			if (strcasecmp(legumes[i][1], ref) == 0)//if same
+			if (strcasecmp(legumes[i][1], ref) == 0)
 			{
 				strcpy(element[0], legumes[i][0]);
 				strcpy(element[1], legumes[i][1]);
@@ -328,7 +327,7 @@ void AddItemToBasketAndgetEmojiByReference(char fruits[15][3][5], char legumes[1
 	case 'F':;
 		for (int i = 0; i < 15; i++)
 		{
-			if (strcasecmp(fruits[i][1], ref) == 0)//if same
+			if (strcasecmp(fruits[i][1], ref) == 0)
 			{
 				strcpy(element[0], fruits[i][0]);
 				strcpy(element[1], fruits[i][1]);
@@ -341,7 +340,7 @@ void AddItemToBasketAndgetEmojiByReference(char fruits[15][3][5], char legumes[1
 	case 'V':;
 		for (int i = 0; i < 15; i++)
 		{
-			if (strcasecmp(viandes[i][1], ref) == 0)//if same
+			if (strcasecmp(viandes[i][1], ref) == 0)
 			{
 				strcpy(element[0], viandes[i][0]);
 				strcpy(element[1], viandes[i][1]);
@@ -388,7 +387,7 @@ int getBasketItemCount(char basket[10][3][5])
 	int basketItemCount = 0;
 	for (int i = 0; i < 10; i++)
 	{
-		if (strcmp(basket[i][1], "000") != 0)//if not empty
+		if (strcmp(basket[i][1], "000"))//if not same so not empty
 		{
 			basketItemCount++;
 		}
@@ -517,7 +516,7 @@ int main()
 
 	char aStrgArray[32];
 	char c;
-	//printCustomForm(fruits, legumes, viandes, caisseMsgs, basket1, basket2, basketsFull);
+
 	while (1)
 	{
 		system("clear");
@@ -526,7 +525,7 @@ int main()
 		gotoxy(30, 30);
 		scanf("%31[0-9a-zA-Z ]", &aStrgArray);
 
-		if (strcasecmp(aStrgArray, "FIN") != 0)
+		if (strcasecmp(aStrgArray, "FIN")) //same strcasecmp(aStrgArray, "FIN") != 0
 		{
 			if (toupper(aStrgArray[0]) == 'S' && toupper(aStrgArray[1]) == 'U' && toupper(aStrgArray[2]) == 'P')
 			{
@@ -545,40 +544,51 @@ int main()
 			aStrgArray[0] = '\0';
 
 		}
-		else
+		else if (getBalance(basket1, basket2) > 0)
 		{
 			clearCarriageReturn(c);
 
-			aStrgArray[0] =  '\0' ;
+			aStrgArray[0] = '\0';
 
 			char buff[64];
 			float f;
 			gotoxy(128, 30);
-			scanf("%f", &f);
-			snprintf(buff, sizeof(buff), caisseMsgsTemplate[1], f);
 
-			strcpy(caisseMsgs[1], buff);
-			snprintf(buff, sizeof(buff), caisseMsgsTemplate[2], f - (getBalance(basket1, basket2)));
-			strcpy(caisseMsgs[2], buff);
-			system("clear");
-
-			printf("Press 'c' to continue\n");
-			printCustomForm(fruits, legumes, viandes, caisseMsgs, basket1, basket2, basketsFull);
-
-			clearCarriageReturn(c);
-
-			char pressedKey;
-			gotoxy(30, 31);
-			scanf("%c", &pressedKey);
-			if (pressedKey != 'c')
+			if (scanf("%f", &f) != 0)
 			{
+				snprintf(buff, sizeof(buff), caisseMsgsTemplate[1], f);
+
+				strcpy(caisseMsgs[1], buff);
+				snprintf(buff, sizeof(buff), caisseMsgsTemplate[2], f - (getBalance(basket1, basket2)));
+				strcpy(caisseMsgs[2], buff);
 				system("clear");
-				return 0;
+
+				printf("Press 'c' to continue\n");
+				printCustomForm(fruits, legumes, viandes, caisseMsgs, basket1, basket2, basketsFull);
+
+				clearCarriageReturn(c);
+
+				char pressedKey;
+				gotoxy(30, 31);
+				scanf("%c", &pressedKey);
+				if (pressedKey != 'c')
+				{
+					system("clear");
+					return 0;
+				}
+
+				strcpy(caisseMsgs[1], caisseMsgsDefault[1]);
+				strcpy(caisseMsgs[2], caisseMsgsDefault[2]);
 			}
-
-			strcpy(caisseMsgs[1], caisseMsgsDefault[1]);
-			strcpy(caisseMsgs[2], caisseMsgsDefault[2]);
-
+			else
+			{
+				printf("Invalid input");
+			}
+		}
+		else
+		{
+			system("clear");
+			return 0;
 		}
 
 		clearCarriageReturn(c);
