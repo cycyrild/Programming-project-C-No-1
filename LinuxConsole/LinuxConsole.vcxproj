@@ -81,6 +81,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="main.c" />
+    <ClCompile Include="sumUp.c" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
