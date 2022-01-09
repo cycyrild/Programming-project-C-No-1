@@ -102,7 +102,7 @@ int countSameArticle(char basket[10][3][5], char itemReference[32])
 	int sameArticleCount = 0;
 	for (int i = 0; i < 10; i++)
 	{
-		if (!strcasecmp(basket[i][1], itemReference))//if same
+		if (!strcasecmp(basket[i][1], itemReference))
 		{
 			sameArticleCount++;
 		}
@@ -116,7 +116,7 @@ float getBalance(char basket1[10][3][5], char basket2[10][3][5])
 
 	for (int i = 0; i < 10; i++)
 	{
-		if (strcmp(basket1[i][1], "000"))//if different than 000
+		if (strcmp(basket1[i][1], "000"))
 		{
 			float f;
 			sscanf(basket1[i][2], "%f", &f);
@@ -125,7 +125,7 @@ float getBalance(char basket1[10][3][5], char basket2[10][3][5])
 	}
 	for (int i = 0; i < 10; i++)
 	{
-		if (strcmp(basket2[i][1], "000"))//if different than 000
+		if (strcmp(basket2[i][1], "000"))
 		{
 			float f;
 			sscanf(basket2[i][2], "%f", &f);
@@ -167,7 +167,7 @@ void deleteElement(char basket1[10][3][5], char basket2[10][3][5], char itemRefe
 	{
 		for (int i = 0; i < 10; i++)
 		{
-			if (!strcasecmp(basket1[i][1], itemReference))//if same
+			if (!strcasecmp(basket1[i][1], itemReference))
 			{
 				clearBasketElementAtIndex(basket1, i);
 				deletedElementIndex = i;
@@ -303,7 +303,7 @@ int getBasketItemCount(char basket[10][3][5])
 	int basketItemCount = 0;
 	for (int i = 0; i < 10; i++)
 	{
-		if (strcmp(basket[i][1], "000"))//if not same so not empty
+		if (strcmp(basket[i][1], "000"))
 		{
 			basketItemCount++;
 		}
@@ -441,7 +441,7 @@ int main()
 		gotoxy(30, 30);
 		scanf("%31[0-9a-zA-Z ]", &aStrgArray);
 
-		if (strcasecmp(aStrgArray, "FIN")) //same strcasecmp(aStrgArray, "FIN") != 0
+		if (strcasecmp(aStrgArray, "FIN"))
 		{
 			if (toupper(aStrgArray[0]) == 'S' && toupper(aStrgArray[1]) == 'U' && toupper(aStrgArray[2]) == 'P')
 			{
