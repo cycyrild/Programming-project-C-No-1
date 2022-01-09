@@ -34,16 +34,27 @@ struct variety countArticle(enum itemType itemType_, struct item allItems[], int
 		}
 	}
 	float varietyPercentage = ((float)output.countSame / output.countAll);
-	/*printf("score %f\n", varietyPercentage);
-	if (varietyPercentage <= 0.025)
-	{output.varietyState = perfect;}
-	else if (varietyPercentage <= 0.050)
-	{output.varietyState = verygreat;}
-	else if (varietyPercentage <= 0.075)
-	{output.varietyState = great;}
-	else if (varietyPercentage >=1)
-	{output.varietyState = less;}*/
-
+	//printf("score %c %f\n", itemType_, varietyPercentage);
+	/*if (varietyPercentage < 0.025f)
+	{
+		printf("perfect");
+		output.varietyState = less;
+	}
+	else if (varietyPercentage < 0.050f)
+	{
+		printf("verygreat");
+		output.varietyState = great;
+	}
+	else if (varietyPercentage < 0.075f)
+	{
+		printf("great");
+		output.varietyState = verygreat;
+	}
+	else if(varietyPercentage == 1.0f)
+	{
+		printf("less");
+		output.varietyState = perfect;
+	}*/
 	return output;
 }
 
@@ -125,10 +136,16 @@ void sumUp(char basket1[10][3][5], char basket2[10][3][5])
 			, allItems[i].icon, allItems[i].ref, allItems[i].count, allItems[i].unitPrice, allItems[i].price);
 	}
 	printf("                                    ╚══════════════════════════════════════════════╝\n\n");
+	
+	struct variety fruitVariety = countArticle(fruit, allItems, allItemsCount);
+	struct variety vegetablesVariety = countArticle(vegetables, allItems, allItemsCount);
+	struct variety meatVariety = countArticle(vegetables, allItems, allItemsCount);
 
-	printf("Number of meat element: %d, variety of meat: %d\n", countArticle(meat, allItems, allItemsCount).countAll, countArticle(meat, allItems, allItemsCount).countSame);
-	printf("Number of vegetables element: %d, variety of vegetables: %d\n", countArticle(vegetables, allItems, allItemsCount).countAll, countArticle(vegetables, allItems, allItemsCount).countSame);
-	printf("Number of fruit element: %d, variety of fruit: %d\n\n", countArticle(fruit, allItems, allItemsCount).countAll, countArticle(fruit, allItems, allItemsCount).countSame);
+	printf("Number of meat element: %d, variety of meat: %d\n", meatVariety.countAll, meatVariety.countSame);
+	printf("Number of vegetables element: %d, variety of vegetables: %d\n", vegetablesVariety.countAll, vegetablesVariety.countSame);
+	printf("Number of fruit element: %d, variety of fruit: %d\n\n", fruitVariety.countAll, fruitVariety.countSame);
+
+
 
 	printf("Press any key to continue ...\n");
 	getchar();
