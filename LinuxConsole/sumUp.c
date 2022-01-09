@@ -1,4 +1,5 @@
 ﻿#include<stdio.h>
+
 struct item
 {
 	int count;
@@ -6,8 +7,45 @@ struct item
 	float unitPrice;
 	char ref[5];
 	char icon[5];
-
 };
+//enum state { less, great, verygreat, perfect };
+
+struct variety
+{
+	int countAll;
+	int countSame;
+	//enum state varietyState;
+};
+
+enum itemType { meat = 'V', vegetables = 'L', fruit = 'F'};
+
+
+struct variety countArticle(enum itemType itemType_, struct item allItems[], int itemCount)
+{
+	struct variety output;
+	output.countAll = 0;
+	output.countSame = 0;
+	for (int i = 0; i < itemCount; i++)
+	{
+		if (allItems[i].ref[0] == itemType_)
+		{
+			output.countSame = output.countSame +1;
+			output.countAll = output.countAll+ allItems[i].count;
+		}
+	}
+	float varietyPercentage = ((float)output.countSame / output.countAll);
+	/*printf("score %f\n", varietyPercentage);
+	if (varietyPercentage <= 0.025)
+	{output.varietyState = perfect;}
+	else if (varietyPercentage <= 0.050)
+	{output.varietyState = verygreat;}
+	else if (varietyPercentage <= 0.075)
+	{output.varietyState = great;}
+	else if (varietyPercentage >=1)
+	{output.varietyState = less;}*/
+
+	return output;
+}
 
 int getIndexItemAlreadyExist(struct item allItems[], char itemReference[])
 {
@@ -42,10 +80,9 @@ void addItemToAllItems(struct item allItems[], char element[5][5][5], int* allIt
 		allItems[indexItemAlreadyExists].count++;
 		allItems[indexItemAlreadyExists].price += f;
 	}
-
 }
 
-int sumUp(char basket1[10][3][5], char basket2[10][3][5])
+void sumUp(char basket1[10][3][5], char basket2[10][3][5])
 {
 	system("clear");
 	struct item allItems[20];
@@ -72,23 +109,27 @@ int sumUp(char basket1[10][3][5], char basket2[10][3][5])
 		}
 	}
 	printf(
-		"╔══════════════════════════════════════════════╗\n"
-		"║        APERCU DU PANIER (%02d article(s))      ║\n"
-		"╠══════════════════════════════════════════════╣\n"
-		"║                                              ║\n",
+		"                                    ╔══════════════════════════════════════════════╗\n"
+		"                                    ║        APERCU DU PANIER (%02d article(s))      ║\n"
+		"                                    ╠══════════════════════════════════════════════╣\n"
+		"                                    ║                                              ║\n",
 		getBasketItemCount(basket1) + getBasketItemCount(basket2)
 	);
 	for (int i = 0; i < allItemsCount; i++)
 	{
 		printf(
-			"║  ╔════════════════════════════════════════╗  ║\n"
-			"║  ║  %s  %s  #%02d   %04.1f              %04.1f ║  ║\n"
-			"║  ╚════════════════════════════════════════╝  ║\n"
-			"║                                              ║\n"
+			"                                    ║  ╔════════════════════════════════════════╗  ║\n"
+			"                                    ║  ║  %s  %s  #%02d   %04.1f              %04.1f ║  ║\n"
+			"                                    ║  ╚════════════════════════════════════════╝  ║\n"
+			"                                    ║                                              ║\n"
 			, allItems[i].icon, allItems[i].ref, allItems[i].count, allItems[i].unitPrice, allItems[i].price);
 	}
-	printf("╚══════════════════════════════════════════════╝\n");
-	printf("Press any key to continue ...");
+	printf("                                    ╚══════════════════════════════════════════════╝\n\n");
+
+	printf("Number of meat element: %d, variety of meat: %d\n", countArticle(meat, allItems, allItemsCount).countAll, countArticle(meat, allItems, allItemsCount).countSame);
+	printf("Number of vegetables element: %d, variety of vegetables: %d\n", countArticle(vegetables, allItems, allItemsCount).countAll, countArticle(vegetables, allItems, allItemsCount).countSame);
+	printf("Number of fruit element: %d, variety of fruit: %d\n\n", countArticle(fruit, allItems, allItemsCount).countAll, countArticle(fruit, allItems, allItemsCount).countSame);
+
+	printf("Press any key to continue ...\n");
 	getchar();
-	return 0;
 }
